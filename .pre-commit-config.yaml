@@ -1,0 +1,39 @@
+repos:
+  # Basic hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  # Ruff: lint + formatter (fast, replaces black/isort/flake8)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.6
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
+   # Type checking (Pyright) via uv
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright (uv)
+        entry: uv run pyright
+        language: system
+        pass_filenames: false
+        files: ^(custom_components/|tests/)
+
+  # Tests via uv
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest (uv)
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        files: ^(custom_components/|tests/)

@@ -1,0 +1,6 @@
+{
+  "name": "Cert Watch",
+  "content_in_root": false,
+  "domains": ["cert_watch"],
+  "homeassistant": "2024.10.0"
+}

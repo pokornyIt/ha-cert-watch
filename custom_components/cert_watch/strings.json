@@ -1,0 +1,17 @@
+{
+  "title": "Cert Watch",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add certificate target",
+        "description": "Monitor a TLS certificate for a host:port.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "sni": "SNI (optional)",
+          "scan_interval_hours": "Scan interval (hours)"
+        }
+      }
+    }
+  }
+}
