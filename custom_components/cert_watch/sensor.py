@@ -3,6 +3,7 @@ from __future__ import annotations
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -51,8 +52,20 @@ class CertWatchSensor(CoordinatorEntity[CertWatchCoordinator], SensorEntity):
         super().__init__(coordinator)
         self.entity_description = description
         self._attr_name = f"{base} {description.name}"
-        self._attr_unique_id = f"{entry_id}:{description.key}"
+        self._attr_unique_id = f"{base}:{description.key}"
 
     @property
     def native_value(self):
         return self.coordinator.data.get(self.entity_description.key)
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        host = self.coordinator.host
+        port = self.coordinator.port
+        return DeviceInfo(
+            identifiers={(DOMAIN, f"{host}:{port}")},
+            name=f"{host}:{port}",
+            manufacturer="Cert Watch",
+            model="TLS Certificate Monitor",
+            configuration_url=f"https://{host}:{port}" if port == 443 else None,
+        )
